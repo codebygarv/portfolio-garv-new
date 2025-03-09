@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = 'mongodb+srv://Garvthakral:Garv%407654@garv-portfolio.8vtyz.mongodb.net/?retryWrites=true&w=majority&appName=Garv-portfolio';
 
 const connectDB = async () => {
     try {
-        await mongoose.connect('mongodb://localhost:27017/yourDatabaseName');
+        await mongoose.connect(MONGO_URI);
         console.log('MongoDB connected...');
     } catch (err) {
         console.error(err.message);
