@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
 const userRoutes = require('./routes/user.routes');
-const path = require('path');
-const connectDB = require(path.join(__dirname, 'db', 'db.js'));
+const connectDB = require('./db/db.js');
+
 connectDB();
 
 app.use(express.json());
