@@ -19,7 +19,7 @@ router.post('/signup', async (req, res) => {
                 id: user.id
             }
         };
-        const token = jwt.sign(payload, 'your_jwt_secret', { expiresIn: '1h' });
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.status(200).json({ user, token });
     } catch (err) {
         console.error(err.message);
@@ -47,7 +47,7 @@ router.post('/login', async (req, res) => {
                 id: user.id
             }
         };
-        const token = jwt.sign(payload, 'your_jwt_secret', { expiresIn: '1h' });
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.status(200).json({ user, token });
     } catch (err) {
         console.error(err.message);
