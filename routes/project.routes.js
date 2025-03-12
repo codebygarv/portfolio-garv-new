@@ -80,4 +80,15 @@ router.put('/updateProject/:id',verifyToken, async (req, res) => {
 }
 );
 
+router.delete('/deleteProject/:id',verifyToken, async (req, res) => {
+    try {
+        await projectModel.findByIdAndDelete(req.params.id);
+        res.status(200).json({ msg: 'Project deleted' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+}
+);
+
 module.exports = router; 
