@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userModel = require('../model/user.model');
 const jwt = require('jsonwebtoken');
+const blacklistTokenModel = require('../model/blacklistToken.model');
 
 
 router.post('/signup', async (req, res) => {
@@ -30,7 +31,7 @@ router.post('/signup', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     const { Email, Password } = req.body;
-    
+
     try {
         let user = await userModel.findOne({ Email });
         if (!user) {
@@ -54,5 +55,29 @@ router.post('/login', async (req, res) => {
         res.status(500).send('Server error');
     }
 });
+
+
+router.get('/logout', async (req, res) => {
+    const token = req.cookies.token || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
+    try {
+        if (!token) {
+            return res.status(401).json({ message: 'Access denied. No token provided' });
+        }
+
+        const isblacklisted = await blacklistTokenModel.findOne({ token });
+
+        if (isblacklisted) {
+            return res.status(401).json({ message: 'Access denied. Token blacklisted' });
+        }
+
+        res.clearCookie('token');
+        await blacklistTokenModel.create({ token });
+        res.status(200).json({ msg: 'Logged out' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+}
+);
 
 module.exports = router;
