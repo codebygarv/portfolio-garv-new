@@ -40,7 +40,7 @@ router.post('/addProject', verifyToken,async (req, res) => {
     }
 });
 
-router.get('/getProjects',verifyToken, async (req, res) => {
+router.get('/getProjects', async (req, res) => {
     try {
         let projects = await projectModel.find();
         res.status(200).json({ projects });
